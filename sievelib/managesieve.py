@@ -19,6 +19,7 @@ import ssl
 
 from future.utils import python_2_unicode_compatible
 import six
+import time
 
 from .digest_md5 import DigestMD5
 
@@ -192,7 +193,8 @@ class Client(object):
         """
         resp, code, data = ("", None, None)
         cpt = 0
-        while True:
+        begin = time.time()
+        while time.time() - begin < Client.read_timeout:
             try:
                 line = self.__read_line()
             except Response as inst:
